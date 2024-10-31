@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Welcome to Admin Dashboard</h2>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <h3>Items</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h3>Add Item</h3>
+    <form method="POST" action="{{ url_for('add_item') }}">
+        <label>Name:</label><input type="text" name="name" required>
+        <label>Description:</label><input type="text" name="description">
+        <label>Price:</label><input type="number" step="0.01" name="price" required>
+        <label>Stock:</label><input type="number" name="stock" required>
+        <button type="submit">Add Item</button>
+    </form>
+</body>
+</html>
