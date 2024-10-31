@@ -1,75 +1,40 @@
-/* styles.css */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: black;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-.calculator {
-    background-color: black;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 320px;
+h2, h3 {
+    color: #333;
+}
+
+.login-container {
+    width: 300px;
+    margin: 50px auto;
     padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#display {
-    width: 75%;
-    height:60px;
-    background-color: steelblue;
-    border: none;
-    border-radius: 50px;
-    text-align: right;
-    font-size: 24px;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    color:white;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
 button {
-    padding: 20px;
-    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
     border: none;
-    border-radius: 100px;
-    background-color: steelblue;
-    color:white;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-button.operator {
-    background-color: steelblue;
-    color: red;
 }
 
-button.operator:hover {
-    background-color: steelblue;
-}
-
-button.function {
-    background-color: steelblue;
-    color: white;
-}
-
-button.zero{
-  grid-column: span 2;
-}
-button.backspace {
-    background-color: red;
-    color: white;
-    grid-auto-columns: span 2;
-}
-button.common{
-  background: red;
-  color:black;
+button:hover {
+    background-color: #45a049;
 }
