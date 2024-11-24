@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Rental Calendar
+{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='calendar.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="calendar" class="calendar-container"></div>
+<script>
+    const today = new Date();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    function renderCalendar(year, month) {
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = `
+            <div class="d-flex justify-content-between mb-2">
+                <button class="btn btn-sm btn-primary" id="prevMonth">Prev</button>
+                <h3>${monthNames[month]} ${year}</h3>
+                <button class="btn btn-sm btn-primary" id="nextMonth">Next</button>
+            </div>
+            <div class="row text-center fw-bold">
+                <div class="col day-cell">Sun</div>
+                <div class="col day-cell">Mon</div>
+                <div class="col day-cell">Tue</div>
+                <div class="col day-cell">Wed</div>
+                <div class="col day-cell">Thu</div>
+                <div class="col day-cell">Fri</div>
+                <div class="col day-cell">Sat</div>
+            </div>
+        `;
+
+        // Create grid for days
+        let dayGrid = '<div class="row">';
+        for (let i = 0; i < firstDay.getDay(); i++) {
+            dayGrid += '<div class="col day-cell"></div>';
+        }
+
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+            const date = new Date(year, month, day);
+            const isToday = date.toDateString() === new Date().toDateString();
+
+            dayGrid += `
+                <div class="col day-cell ${isToday ? 'today' : ''}" data-date="${date.toISOString()}">
+                    ${day}
+                </div>
+            `;
+            if (date.getDay() === 6 && day !== lastDay.getDate()) {
+                dayGrid += '</div><div class="row">';
+            }
+        }
+
+        dayGrid += '</div>';
+        calendar.innerHTML += dayGrid;
+
+        // Fetch events and populate them
+        fetch('/get_calendar_events')
+            .then(response => response.json())
+            .then(data => {
+                data.events.forEach(event => {
+                    const eventStart = new Date(event.start);
+                    const eventEnd = new Date(event.end);
+                    const days = document.querySelectorAll(`[data-date]`);
+
+                    days.forEach(day => {
+                        const cellDate = new Date(day.getAttribute('data-date'));
+                        if (cellDate >= eventStart && cellDate <= eventEnd) {
+                            const eventDiv = document.createElement('div');
+                            eventDiv.classList.add('event');
+                            eventDiv.textContent = event.title;
+                            day.appendChild(eventDiv);
+                        }
+                    });
+                });
+            });
+
+        // Handle navigation
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            const newMonth = new Date(year, month - 1, 1);
+            renderCalendar(newMonth.getFullYear(), newMonth.getMonth());
+        });
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            const newMonth = new Date(year, month + 1, 1);
+            renderCalendar(newMonth.getFullYear(), newMonth.getMonth());
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCalendar(today.getFullYear(), today.getMonth());
+    });
+</script>
+
+{% endblock %}

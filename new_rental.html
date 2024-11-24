@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Create New Rental</h1>
+<form method="POST">
+    <label for="customer_name">Customer Name:</label>
+    <input type="text" id="customer_name" name="customer_name" required>
+    <br>
+
+    <label for="item_id">Select Item:</label>
+    <select id="item_id" name="item_id" required>
+        {% for item in items %}
+        <option value="{{ item.item_id }}">{{ item.item_type }} (ID: {{ item.item_id }})</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <label for="rental_date">Rental Date:</label>
+    <input type="date" id="rental_date" name="rental_date" required>
+    <br>
+
+    <label for="return_date">Return Date:</label>
+    <input type="date" id="return_date" name="return_date" required>
+    <br>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" required>
+    <br>
+
+    <button type="submit">Create Rental</button>
+</form>
+{% endblock %}
